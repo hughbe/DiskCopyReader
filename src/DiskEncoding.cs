@@ -24,4 +24,19 @@ public enum DiskEncoding : byte
     /// MFM 1.44MB encoding.
     /// </summary>
     MFM1440k = 0x03,
+
+    /// <summary>
+    /// MFM 1.68MB encoding.
+    /// </summary>
+    MFM1680K = 0x04,
+
+    /// <summary>
+    /// Twiggy disk encoding.
+    /// </summary>
+    Twiggy = 0x54,
+
+    /// <summary>
+    /// Non-standard encoding.
+    /// </summary>
+    NonStandard = 0x5D
 }

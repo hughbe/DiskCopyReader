@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Cli;
 using DiskCopyReader;
+using DiskCopyReader.Utilities;
 
 public sealed class Program
 {
@@ -44,10 +45,10 @@ sealed class ExtractCommand : AsyncCommand<ExtractSettings>
         }
 
         await using var stream = input.OpenRead();
-        DiskCopyImage image;
+        DiskCopy42Image image;
         try
         {
-            image = new DiskCopyImage(stream);
+            image = new DiskCopy42Image(stream);
         }
         catch (Exception ex)
         {
@@ -57,7 +58,8 @@ sealed class ExtractCommand : AsyncCommand<ExtractSettings>
 
         // Display header information
         AnsiConsole.MarkupLine($"[green]Image Name[/]: {image.Header.ImageName}");
-        AnsiConsole.MarkupLine($"[green]Disk Encoding[/]: {image.Header.DiskEncoding}");
+        AnsiConsole.MarkupLine($"[green]Disk Encoding[/]: {image.Header.Encoding}");
+        AnsiConsole.MarkupLine($"[green]Disk Format[/]: {image.Header.Format}");
         AnsiConsole.MarkupLine($"[green]Data Size[/]: {image.Header.DataSize} bytes");
         AnsiConsole.MarkupLine($"[green]Tag Size[/]: {image.Header.TagSize} bytes");
 

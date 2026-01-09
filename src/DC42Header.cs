@@ -1,5 +1,4 @@
 using System.Buffers.Binary;
-using System.Data;
 using System.Diagnostics;
 using System.Text;
 
@@ -48,12 +47,12 @@ public readonly struct DC42Header
     /// <summary>
     /// Gets the disk encoding.
     /// </summary>
-    public DiskEncoding DiskEncoding { get; }
+    public DiskEncoding Encoding { get; }
 
     /// <summary>
     /// Gets the disk format.
     /// </summary>
-    public byte Format { get; }
+    public DiskFormat Format { get; }
 
     /// <summary>
     /// Gets the magic number.
@@ -78,8 +77,13 @@ public readonly struct DC42Header
         ImageNameLength = data[offset];
         offset += 1;
 
+        if (ImageNameLength > 63)
+        {
+            throw new ArgumentException("Invalid DC42 image: image name length exceeds maximum.", nameof(data));
+        }
+
         // Image name, in ascii, padded with NULs
-        ImageName = Encoding.ASCII.GetString(data.Slice(offset, ImageNameLength));
+        ImageName = System.Text.Encoding.ASCII.GetString(data.Slice(offset, ImageNameLength));
         offset += 63;
 
         // Data size in bytes (of block starting at 0x54)
@@ -99,17 +103,22 @@ public readonly struct DC42Header
         offset += 4;
 
         // Disk encoding
-        DiskEncoding = (DiskEncoding)data[offset];
+        Encoding = (DiskEncoding)data[offset];
         offset += 1;
 
-        if (!Enum.IsDefined(DiskEncoding))
+        if (!Enum.IsDefined(Encoding))
         {
-            throw new ArgumentException("Invalid DC42 image: unknown disk encoding.", nameof(data));
+            throw new ArgumentException($"Invalid DC42 image: unknown disk encoding 0x{(byte)Encoding:X2}.", nameof(data));
         }
 
         // Format Byte
-        Format = data[offset];
+        Format = (DiskFormat)data[offset];
         offset += 1;
+
+        if (!Enum.IsDefined(Format))
+        {
+            throw new ArgumentException($"Invalid DC42 image: unknown disk format 0x{(byte)Format:X2}.", nameof(data));
+        }
 
         // '0x01 0x00' ('Private Word') AKA Magic Number
         MagicNumber = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(offset, 2));

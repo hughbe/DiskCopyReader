@@ -1,6 +1,6 @@
 using System.Buffers.Binary;
 
-namespace DiskCopyReader;
+namespace DiskCopyReader.Utilities;
 
 /// <summary>
 /// Provides methods to calculate Disk Copy checksums.

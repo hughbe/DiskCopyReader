@@ -1,11 +1,9 @@
-using DiskCopyReader.Utilities;
-
 namespace DiskCopyReader;
 
 /// <summary>
-/// Represents a Disk Copy image.
+/// Represents a Disk Copy 4.2 image.
 /// </summary>
-public class DiskCopyImage
+public class DiskCopy42Image
 {
     /// <summary>
     /// Gets the Disk Copy image header.
@@ -23,12 +21,12 @@ public class DiskCopyImage
     public byte[] TagData { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DiskCopyImage"/> class.
+    /// Initializes a new instance of the <see cref="DiskCopy42Image"/> class.
     /// </summary>
     /// <param name="stream">The stream containing the Disk Copy image data.</param>
     /// <exception cref="ArgumentNullException">Thrown when the stream is null.</exception> 
     /// <exception cref="ArgumentException">Thrown when the stream is not seekable or readable.</exception>
-    public DiskCopyImage(Stream stream)
+    public DiskCopy42Image(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
         if (!stream.CanSeek || !stream.CanRead)
@@ -45,13 +43,13 @@ public class DiskCopyImage
 
         Header = new DC42Header(data);
 
-        var expectedDataSize = Header.DiskEncoding switch
+        var expectedDataSize = Header.Encoding switch
         {
             DiskEncoding.GCR400k => 409600,
             DiskEncoding.GCR800k => 819200,
             DiskEncoding.MFM720k => 737280,
             DiskEncoding.MFM1440k => 1474560,
-            _ => throw new NotSupportedException($"Disk encoding '{Header.DiskEncoding}' is not supported.")
+            _ => throw new NotSupportedException($"Disk encoding '{Header.Encoding}' is not supported.")
         };
         if (Header.DataSize % 2 != 0 || Header.DataSize != expectedDataSize)
         {
