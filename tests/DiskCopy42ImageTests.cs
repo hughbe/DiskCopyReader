@@ -13,6 +13,7 @@ public class DiskCopy42ImageTests
     [InlineData("LisaOS2/Lisa Office System 2.0 4.image")]
     [InlineData("LisaOS2/Lisa Office System 2.0 5.image")]
     [InlineData("BLU090_400k.dc42")]
+    [InlineData("DART 1.5.3.image")]
     public void Ctor_Stream(string diskName)
     {
         var filePath = Path.Combine("Samples", diskName);
