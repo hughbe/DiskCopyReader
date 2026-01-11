@@ -41,7 +41,7 @@ using DiskCopyReader;
 using var stream = File.OpenRead("disk.image");
 
 // Parse the Disk Copy image
-var image = new DiskCopyImage(stream);
+var image = new DiskCopy42Image(stream);
 
 // Get image header information
 Console.WriteLine($"Image Name: {image.Header.ImageName}");
@@ -81,11 +81,11 @@ Console.WriteLine($"Tag checksum valid: {tagValid}");
 
 ## API Overview
 
-### DiskCopyImage
+### DiskCopy42Image
 
 The main class for reading Disk Copy 4.2 images.
 
-- `DiskCopyImage(Stream stream)` - Opens a Disk Copy image from a stream
+- `DiskCopy42Image(Stream stream)` - Opens a Disk Copy image from a stream
 - `Header` - Gets the DC42 header containing image metadata
 - `ImageData` - Gets the raw disk data as a byte array
 - `TagData` - Gets the tag data as a byte array
@@ -160,7 +160,7 @@ Output files:
 
 MIT License. See [LICENSE](LICENSE) for details.
 
-Copyright (c) 2025 Hugh Bellamy
+Copyright (c) 2026 Hugh Bellamy
 
 ## About Disk Copy 4.2
 
