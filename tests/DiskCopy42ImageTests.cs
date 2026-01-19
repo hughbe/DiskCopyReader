@@ -12,6 +12,13 @@ public class DiskCopy42ImageTests
     [InlineData("LisaOS2/Lisa Office System 2.0 3.image")]
     [InlineData("LisaOS2/Lisa Office System 2.0 4.image")]
     [InlineData("LisaOS2/Lisa Office System 2.0 5.image")]
+    [InlineData("gsosinstalldisks/Disk 1 of 7-Install")]
+    [InlineData("gsosinstalldisks/Disk 2 of 7-SystemDisk")]
+    [InlineData("gsosinstalldisks/Disk 3 of 7-SystemTools1")]
+    [InlineData("gsosinstalldisks/Disk 4 of 7-SystemTools2")]
+    [InlineData("gsosinstalldisks/Disk 5 of 7-Fonts")]
+    [InlineData("gsosinstalldisks/Disk 6 of 7-synthLAB")]
+    [InlineData("gsosinstalldisks/Disk 7 of 7-Apple II Setup")]
     [InlineData("BLU090_400k.dc42")]
     [InlineData("DART 1.5.3.image")]
     public void Ctor_Stream(string diskName)

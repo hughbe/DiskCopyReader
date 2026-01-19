@@ -174,5 +174,7 @@ Disk Copy was a disk image utility created by Apple Computer for the classic Mac
 
 ## Related Projects
 
+- [AppleIIDiskReader](https://github.com/hughbe/AppleIIDiskReader) - Reader for Apple II disks
+- [ProDosVolumeReader](https://github.com/hughbe/ProDosVolumeReader) - Reader for ProDOS volumes
 - [MfsReader](https://github.com/hughbe/MfsReader) - Reader for MFS (Macintosh File System) volumes
 - [HfsReader](https://github.com/hughbe/HfsReader) - Reader for HFS (Hierarchical File System) volumes
