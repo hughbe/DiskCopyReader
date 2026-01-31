@@ -5,6 +5,10 @@ namespace DiskCopyReader.Tests;
 public class DiskCopy42ImageTests
 {
     [Theory]
+    [InlineData("ftp.apple.asimov.net/images/applelisa/Apple Lisa Software - Disk Images_Lisa MacWorks 3.0 Mac Sys.image")]
+    [InlineData("ftp.apple.asimov.net/images/applelisa/Apple Lisa Software - Disk Images_Lisa MacWorks 3.0.image")]
+    [InlineData("ftp.apple.asimov.net/images/applelisa/Apple Lisa Software - Disk Images_LisaGuide.image")]
+    [InlineData("ftp.apple.asimov.net/images/applelisa/LISA CALENDAR (Master).image")]
     [InlineData("MacWrite and Paint 1.0.dsk")]
     [InlineData("MacWrite 4.5.image")]
     [InlineData("LisaOS2/Lisa Office System 2.0 1.image")]
