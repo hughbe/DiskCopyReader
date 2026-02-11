@@ -45,10 +45,10 @@ public class DiskCopy42Image
 
         var expectedDataSize = Header.Encoding switch
         {
-            DiskEncoding.GCR400k => 409600,
-            DiskEncoding.GCR800k => 819200,
-            DiskEncoding.MFM720k => 737280,
-            DiskEncoding.MFM1440k => 1474560,
+            DiskEncoding.GCR400k => 409_600,
+            DiskEncoding.GCR800k => 819_200,
+            DiskEncoding.MFM720k => 737_280,
+            DiskEncoding.MFM1440k => 1_474_560,
             _ => throw new NotSupportedException($"Disk encoding '{Header.Encoding}' is not supported.")
         };
         if (Header.DataSize % 2 != 0 || Header.DataSize != expectedDataSize)

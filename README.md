@@ -45,7 +45,7 @@ var image = new DiskCopy42Image(stream);
 
 // Get image header information
 Console.WriteLine($"Image Name: {image.Header.ImageName}");
-Console.WriteLine($"Disk Encoding: {image.Header.DiskEncoding}");
+Console.WriteLine($"Disk Encoding: {image.Header.Encoding}");
 Console.WriteLine($"Data Size: {image.Header.DataSize} bytes");
 Console.WriteLine($"Tag Size: {image.Header.TagSize} bytes");
 ```
@@ -94,15 +94,23 @@ The main class for reading Disk Copy 4.2 images.
 
 Contains the Disk Copy 4.2 image header metadata:
 
-- `ImageName` - Name of the disk image (up to 63 characters)
+- `ImageName` - Name of the disk image as a `String63` inline array (up to 63 characters, zero-alloc)
 - `ImageNameLength` - Length of the image name
 - `DataSize` - Size of the disk data in bytes
 - `TagSize` - Size of the tag data in bytes
 - `DataChecksum` - Checksum of the disk data
 - `TagChecksum` - Checksum of the tag data
-- `DiskEncoding` - Encoding type of the disk (GCR400k, GCR800k, MFM720k, MFM1440k)
+- `Encoding` - Encoding type of the disk (GCR400k, GCR800k, MFM720k, MFM1440k)
 - `Format` - Format byte
 - `MagicNumber` - Magic number for format verification (0x0100)
+
+### String63
+
+A fixed-size `[InlineArray(63)]` struct for storing Disk Copy image names without heap allocation. Implements `ISpanFormattable` and `IEquatable<String63>`, and has an implicit conversion to `string`.
+
+### DiskCopyTimestamp
+
+A lightweight struct representing a MacOS timestamp (seconds since January 1, 1904). Used by `MfsTag` to defer `DateTime` conversion until needed via `ToDateTime()`. Implements `IEquatable`, `IComparable`, and `IFormattable`, and has an implicit conversion to `DateTime`.
 
 ### DiskEncoding
 
@@ -151,6 +159,23 @@ dc-dumper <input> [-o|--output <path>] [--include-tags] [--verify]
 Output files:
 - `<ImageName>.dsk` - Raw disk data
 - `<ImageName>.tags` - Tag data (if `--include-tags` is specified)
+
+## Benchmarks
+
+Run benchmarks using BenchmarkDotNet:
+
+```sh
+dotnet run --project benchmarks/DiskCopyReader.Benchmarks.csproj -c Release
+```
+
+Results on Apple M4, .NET 9.0:
+
+| Method                                | Mean          | Allocated |
+|-------------------------------------- |--------------:|----------:|
+| Read DiskCopy42Image                  |  38,134.21 ns |  820081 B |
+| Calculate checksum                    | 204,283.65 ns |       0 B |
+| Parse header (String63, zero-alloc)   |      12.24 ns |       0 B |
+| Parse header (string, allocating)     |      14.29 ns |      56 B |
 
 ## Requirements
 

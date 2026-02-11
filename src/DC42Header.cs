@@ -1,6 +1,5 @@
 using System.Buffers.Binary;
 using System.Diagnostics;
-using System.Text;
 
 namespace DiskCopyReader;
 
@@ -22,7 +21,7 @@ public readonly struct DC42Header
     /// <summary>
     /// Gets the image name.
     /// </summary>
-    public string ImageName { get; }
+    public String63 ImageName { get; }
 
     /// <summary>
     /// Gets the data size in bytes.
@@ -83,7 +82,7 @@ public readonly struct DC42Header
         }
 
         // Image name, in ascii, padded with NULs
-        ImageName = System.Text.Encoding.ASCII.GetString(data.Slice(offset, ImageNameLength));
+        ImageName = new String63(data.Slice(offset, ImageNameLength));
         offset += 63;
 
         // Data size in bytes (of block starting at 0x54)

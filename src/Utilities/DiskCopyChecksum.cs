@@ -1,4 +1,6 @@
-using System.Buffers.Binary;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DiskCopyReader.Utilities;
 
@@ -16,11 +18,14 @@ public static class DiskCopyChecksum
     {
         uint checksum = 0;
 
-        for (int i = 0; i + 1 < data.Length; i += 2)
+        ref byte start = ref MemoryMarshal.GetReference(data);
+        int length = data.Length;
+
+        for (int i = 0; i + 1 < length; i += 2)
         {
-            ushort word = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(i, 2));
+            uint word = (uint)(Unsafe.Add(ref start, i) << 8 | Unsafe.Add(ref start, i + 1));
             checksum += word;
-            checksum = ((checksum >> 1) & ~(1 << 31)) | ((checksum & 1) << 31); // Rotate right by 1 bit
+            checksum = BitOperations.RotateRight(checksum, 1);
         }
 
         return checksum;

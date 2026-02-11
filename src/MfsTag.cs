@@ -1,6 +1,5 @@
 using System.Buffers.Binary;
 using System.Diagnostics;
-using HfsReader.Utilities;
 
 namespace DiskCopyReader;
 
@@ -32,7 +31,7 @@ public readonly struct MfsTag
     /// <summary>
     /// Gets the last modification date of the file.
     /// </summary>
-    public DateTime LastModificationDate { get; }
+    public DiskCopyTimestamp LastModificationDate { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MfsTag"/> struct.
@@ -57,7 +56,7 @@ public readonly struct MfsTag
         LogicalBlockNumber = BinaryPrimitives.ReadUInt16BigEndian(data.Slice(offset, 2));
         offset += 2;
 
-        LastModificationDate = SpanUtilities.ReadMacOSTimestamp(data.Slice(offset, 4));
+        LastModificationDate = new DiskCopyTimestamp(data.Slice(offset, 4));
         offset += 4;
 
         Debug.Assert(offset == data.Length, "Did not consume all bytes of MFS tag.");
