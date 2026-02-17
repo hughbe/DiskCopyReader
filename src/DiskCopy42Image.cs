@@ -36,10 +36,7 @@ public class DiskCopy42Image
         
         // Length of image name string ('Pascal name length')
         Span<byte> data = stackalloc byte[DC42Header.Size];
-        if (stream.Read(data) != data.Length)
-        {
-            throw new ArgumentException("Stream is too short to contain a valid Disk Copy image.", nameof(stream));
-        }
+        stream.ReadExactly(data);
 
         Header = new DC42Header(data);
 
@@ -57,15 +54,9 @@ public class DiskCopy42Image
         }
 
         ImageData = new byte[Header.DataSize];
-        if (stream.Read(ImageData) != ImageData.Length)
-        {
-            throw new ArgumentException("Stream is too short to contain the image data.", nameof(stream));
-        }
+        stream.ReadExactly(ImageData);
 
         TagData = new byte[Header.TagSize];
-        if (stream.Read(TagData) != TagData.Length)
-        {
-            throw new ArgumentException("Stream is too short to contain the tag data.", nameof(stream));
-        }
+        stream.ReadExactly(TagData);
     }
 }
